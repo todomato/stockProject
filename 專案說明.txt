@@ -1,0 +1,8 @@
+
+1.HtmlParseForm : 解析網頁用,搭配Xpath使用 (firebug套件)
+2.StockForm(少用) : 設計解析goodinfo網站用
+3.ChipForm : 
+	a.解析集保股權用
+	b.解析三大法人用
+
+	說明 : 每周開啟ChipForm更新每周集保資訊 -> 更新最近時期集保資訊即可

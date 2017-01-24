@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StockModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="goodinfo_FinancialRatio">
+          <Key>
+            <PropertyRef Name="Session" />
+          </Key>
+          <Property Name="Session" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="ID" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="GrossMargin" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OperatingProfitMargin" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EarningBeforeTaxMargin" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NetProfitMargin" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NetProfitMarginMother" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EPSBeforeTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EPS" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ROE_Session" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ROE_Year" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ROA_Session" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ROA_Year" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="goodinfo_KSession">
+          <Key>
+            <PropertyRef Name="Session" />
+          </Key>
+          <Property Name="ID" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="Session" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="TradeCount" Type="int" Nullable="false" />
+          <Property Name="kOpen" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="kHigh" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="kClose" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="kLow" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpDownPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpDownPercentage" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="goodinfo_Revenues">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="rOpen" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="rHigh" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="rClose" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="rLow" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpDownPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpDownPercentage" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Revenue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MonthGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="YearGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalRevenue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalYearGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CoRevenue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CoMonthGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CoYearGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CoTotalRevenue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CoTotalYearGrowthRate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedTime" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="StockModelStoreContainer">
+          <EntitySet Name="goodinfo_FinancialRatio" EntityType="Self.goodinfo_FinancialRatio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="goodinfo_KSession" EntityType="Self.goodinfo_KSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="goodinfo_Revenues" EntityType="Self.goodinfo_Revenues" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StockModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="StockEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="goodinfo_FinancialRatio" EntityType="StockModel.goodinfo_FinancialRatio" />
+          <EntitySet Name="goodinfo_KSession" EntityType="StockModel.goodinfo_KSession" />
+          <EntitySet Name="goodinfo_Revenues" EntityType="StockModel.goodinfo_Revenues" />
+        </EntityContainer>
+        <EntityType Name="goodinfo_FinancialRatio">
+          <Key>
+            <PropertyRef Name="Session" />
+          </Key>
+          <Property Name="Session" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="GrossMargin" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="OperatingProfitMargin" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="EarningBeforeTaxMargin" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetProfitMargin" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetProfitMarginMother" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="EPSBeforeTax" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="EPS" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ROE_Session" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ROE_Year" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ROA_Session" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ROA_Year" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="goodinfo_KSession">
+          <Key>
+            <PropertyRef Name="Session" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Session" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="TradeCount" Type="Int32" Nullable="false" />
+          <Property Name="kOpen" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="kHigh" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="kClose" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="kLow" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UpDownPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UpDownPercentage" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="goodinfo_Revenues">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="rOpen" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="rHigh" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="rClose" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="rLow" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UpDownPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UpDownPercentage" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Revenue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MonthGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="YearGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalRevenue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalYearGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CoRevenue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CoMonthGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CoYearGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CoTotalRevenue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CoTotalYearGrowthRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StockModelStoreContainer" CdmEntityContainer="StockEntities">
+          <EntitySetMapping Name="goodinfo_FinancialRatio">
+            <EntityTypeMapping TypeName="StockModel.goodinfo_FinancialRatio">
+              <MappingFragment StoreEntitySet="goodinfo_FinancialRatio">
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ROA_Year" ColumnName="ROA_Year" />
+                <ScalarProperty Name="ROA_Session" ColumnName="ROA_Session" />
+                <ScalarProperty Name="ROE_Year" ColumnName="ROE_Year" />
+                <ScalarProperty Name="ROE_Session" ColumnName="ROE_Session" />
+                <ScalarProperty Name="EPS" ColumnName="EPS" />
+                <ScalarProperty Name="EPSBeforeTax" ColumnName="EPSBeforeTax" />
+                <ScalarProperty Name="NetProfitMarginMother" ColumnName="NetProfitMarginMother" />
+                <ScalarProperty Name="NetProfitMargin" ColumnName="NetProfitMargin" />
+                <ScalarProperty Name="EarningBeforeTaxMargin" ColumnName="EarningBeforeTaxMargin" />
+                <ScalarProperty Name="OperatingProfitMargin" ColumnName="OperatingProfitMargin" />
+                <ScalarProperty Name="GrossMargin" ColumnName="GrossMargin" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Session" ColumnName="Session" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goodinfo_KSession">
+            <EntityTypeMapping TypeName="StockModel.goodinfo_KSession">
+              <MappingFragment StoreEntitySet="goodinfo_KSession">
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpDownPercentage" ColumnName="UpDownPercentage" />
+                <ScalarProperty Name="UpDownPrice" ColumnName="UpDownPrice" />
+                <ScalarProperty Name="kLow" ColumnName="kLow" />
+                <ScalarProperty Name="kClose" ColumnName="kClose" />
+                <ScalarProperty Name="kHigh" ColumnName="kHigh" />
+                <ScalarProperty Name="kOpen" ColumnName="kOpen" />
+                <ScalarProperty Name="TradeCount" ColumnName="TradeCount" />
+                <ScalarProperty Name="Session" ColumnName="Session" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goodinfo_Revenues">
+            <EntityTypeMapping TypeName="StockModel.goodinfo_Revenues">
+              <MappingFragment StoreEntitySet="goodinfo_Revenues">
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CoTotalYearGrowthRate" ColumnName="CoTotalYearGrowthRate" />
+                <ScalarProperty Name="CoTotalRevenue" ColumnName="CoTotalRevenue" />
+                <ScalarProperty Name="CoYearGrowthRate" ColumnName="CoYearGrowthRate" />
+                <ScalarProperty Name="CoMonthGrowthRate" ColumnName="CoMonthGrowthRate" />
+                <ScalarProperty Name="CoRevenue" ColumnName="CoRevenue" />
+                <ScalarProperty Name="TotalYearGrowthRate" ColumnName="TotalYearGrowthRate" />
+                <ScalarProperty Name="TotalRevenue" ColumnName="TotalRevenue" />
+                <ScalarProperty Name="YearGrowthRate" ColumnName="YearGrowthRate" />
+                <ScalarProperty Name="MonthGrowthRate" ColumnName="MonthGrowthRate" />
+                <ScalarProperty Name="Revenue" ColumnName="Revenue" />
+                <ScalarProperty Name="UpDownPercentage" ColumnName="UpDownPercentage" />
+                <ScalarProperty Name="UpDownPrice" ColumnName="UpDownPrice" />
+                <ScalarProperty Name="rLow" ColumnName="rLow" />
+                <ScalarProperty Name="rClose" ColumnName="rClose" />
+                <ScalarProperty Name="rHigh" ColumnName="rHigh" />
+                <ScalarProperty Name="rOpen" ColumnName="rOpen" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
