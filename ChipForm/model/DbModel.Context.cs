@@ -26,5 +26,6 @@ namespace ChipForm.model
         }
     
         public virtual DbSet<Chip> Chip { get; set; }
+        public virtual DbSet<Institution> Institution { get; set; }
     }
 }

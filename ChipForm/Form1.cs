@@ -3,15 +3,10 @@ using ChipForm.service;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChipForm
@@ -35,14 +30,13 @@ namespace ChipForm
 
             //防呆
             ChipService svc = new ChipService();
-            var dbDateList = svc.GetDateList();
+            var dbDateList = svc.GetChipDateList();
             if (string.IsNullOrEmpty(date)) return; //防空值
-            //if (dbDateList.Any(c => c == date)) 
+            //if (dbDateList.Any(c => c == date))
             //{
-            //    MessageBox.Show("資料庫已有此日期資料"); 
+            //    MessageBox.Show("資料庫已有此日期資料");
             //    return; //防重複
-            //} 
-
+            //}
 
             // 取得近一年stock code : 將股號放在txt檔即可
             string fullPath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "StockCode.txt");
@@ -54,12 +48,12 @@ namespace ChipForm
             string xpathTemplate = "/html/body/table/tr/td/table[6]/tbody/tr[{0}]";
             string xpath = "";
             // /html/body/table/tr/td/table[6]/tbody/tr[17]
-            
+
             var data = new List<ChipModel>();
             var errprList = new List<string>();
 
             //代碼列
-            int count = 1 ;
+            int count = 1;
             foreach (var code in codeList)
             {
                 textBox1.Text = string.Format("{2} : {0}/{1}", count++, codeList.Count, date);
@@ -68,6 +62,7 @@ namespace ChipForm
                 url = string.Format(urlTemplate, date, code);
 
                 #region 解析web籌碼
+
                 //下載html
                 var doc = ParseHtmlToDoc(url);
 
@@ -118,11 +113,8 @@ namespace ChipForm
                                     }
                                 }
                             }
-
-                                
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -130,7 +122,8 @@ namespace ChipForm
                     textBox1.Text = Environment.NewLine + ex.InnerException.ToString();
                     Application.DoEvents();
                 }
-                #endregion
+
+                #endregion 解析web籌碼
             }
 
             //更新資料庫
@@ -141,12 +134,10 @@ namespace ChipForm
             {
                 RecordError(date, errprList);
                 MessageBox.Show("有錯誤紀錄！");
-
             }
 
             MessageBox.Show("更新完成");
         }
-
 
         /// <summary>
         /// 取得集保頁面每周日期
@@ -175,14 +166,12 @@ namespace ChipForm
                 return;
             }
 
-
             //日期
             var dateList = getChipDateList();
             dateList.Reverse();
-          
-            ChipService svc = new ChipService();
-            var dbDateList = svc.GetDateList();
 
+            ChipService svc = new ChipService();
+            var dbDateList = svc.GetChipDateList();
 
             // 取得近一年stock code : 將股號放在txt檔即可
             string fullPath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "StockCode.txt");
@@ -198,7 +187,7 @@ namespace ChipForm
             foreach (var date in dateList)
             {
                 //防呆 資料庫有就不新增
-                if(dbDateList.Any(c => c == date)) continue;
+                if (dbDateList.Any(c => c == date)) continue;
 
                 var data = new List<ChipModel>();
                 var errprList = new List<string>();
@@ -214,6 +203,7 @@ namespace ChipForm
                     url = string.Format(urlTemplate, date, code);
 
                     #region 解析web籌碼
+
                     //下載html
                     var doc = ParseHtmlToDoc(url);
 
@@ -264,11 +254,8 @@ namespace ChipForm
                                         }
                                     }
                                 }
-
-
                             }
                         }
-
                     }
                     catch (Exception ex)
                     {
@@ -276,7 +263,8 @@ namespace ChipForm
                         textBox1.Text = Environment.NewLine + ex.InnerException.ToString();
                         Application.DoEvents();
                     }
-                    #endregion
+
+                    #endregion 解析web籌碼
                 }
 
                 //更新資料庫
@@ -287,7 +275,6 @@ namespace ChipForm
                 {
                     RecordError(date, errprList);
                     MessageBox.Show("有錯誤紀錄！");
-
                 }
             }
 
@@ -306,62 +293,95 @@ namespace ChipForm
             // xpath : //*[@id="tbl-sortable"]/tbody/tr[1]
 
             string Url = "http://www.tse.com.tw/ch/trading/fund/TWT54U/TWT54U.php";
-            HttpWebRequest request = HttpWebRequest.Create(Url) as HttpWebRequest;
-            string page = null;
-            request.Method = "POST";    // 方法
-            request.KeepAlive = true; //是否保持連線
-            request.ContentType = "application/x-www-form-urlencoded";
+            ChipService svc = new ChipService();
+            var dbDateList = svc.GetinstitutionDateList();
 
             //2016 年日期列表, 新的列表要用新的邏輯去抓每週一,如果回傳空值要抓隔天之類的,或是提供自行輸入抓取
-            var dates = GetOldDate(); 
+            var dates = GetOldDate();
+            var year = txt_year.Text; 
 
-            //TODO foreach 回圈抓資料
-
-            string param = "download=&query_year=2016&query_week=20161226&select2=ALLBUT0999&sorting=by_issue";
-            byte[] bs = Encoding.ASCII.GetBytes(param);
-
-            using (Stream reqStream = request.GetRequestStream())
+            foreach (var date in dates)
             {
-                reqStream.Write(bs, 0, bs.Length);
-            }
+                //防呆 資料庫有就不新增
+                if (dbDateList.Any(c => c == date)) continue;
 
-            using (WebResponse response = request.GetResponse())
-            {
-                StreamReader sr = new StreamReader(response.GetResponseStream());
-                page = sr.ReadToEnd();
-                sr.Close();
-            }
+                string param = string.Format("download=&query_year={1}&query_week={0}&select2=ALLBUT0999&sorting=by_issue", date, year);
+                byte[] bs = Encoding.ASCII.GetBytes(param);
 
-            //解析html
-            var doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(page);
+                HttpWebRequest request = HttpWebRequest.Create(Url) as HttpWebRequest;
+                string page = null;
+                request.Method = "POST";    // 方法
+                request.KeepAlive = false; //是否保持連線
+                request.ContentType = "application/x-www-form-urlencoded";
 
-            string xpath = textBox2.Text;
-           
-
-            //解析資料
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes(xpath);
-            if (nodes != null)
-            {
-                foreach (HtmlNode node in nodes)
+                using (Stream reqStream = request.GetRequestStream())
                 {
-                        
-                    var str = node.InnerText.Trim();
-                    //解析字串
-                    List<string> list = str.Split(new string[] { "\t\t\t" }, StringSplitOptions.None).Select(c => c.Trim()).ToList();
+                    reqStream.Write(bs, 0, bs.Length);
+                }
 
-                    foreach (var item in list)
-	                {
-                        textBox1.Text += item + Environment.NewLine;
-	                }
-                        
+                using (WebResponse response = request.GetResponse())
+                {
+                    StreamReader sr = new StreamReader(response.GetResponseStream());
+                    page = sr.ReadToEnd();
+                    sr.Close();
+                }
+
+                //解析html
+                HtmlNode.ElementsFlags.Remove("option");
+                var doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(page);
+
+                string xpath = "//*[@id=\"tbl-sortable\"]/tbody";
+
+                //解析資料
+                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes(xpath);
+                if (nodes != null)
+                {
+                    foreach (HtmlNode node in nodes)
+                    {
+                        var str = node.InnerText.Trim();
+                        //解析字串
+                        List<string> list = str.Split(new string[] { "\t\t\t" }, StringSplitOptions.None).Select(c => c.Trim()).ToList();
+
+                        // 組裝
+                        var institutions = new List<InstitutionalModel>();
+                        for (int i = 0; i <= list.Count; i = i + 17)
+                        {
+                            //非stock
+                            if (list[i].Length != 4) continue;
+                            textBox1.Text = string.Format("{1} : {0}", institutions.Count, date);
+                            Application.DoEvents();
+
+                            var item = new InstitutionalModel()
+                            {
+                                Code = list[i],
+                                Category = "上市",
+                                Type = "week",
+                                InfoDate = date,
+                                ForeignBuy = decimal.Parse(list[i + 2]),
+                                ForeignSell = decimal.Parse(list[i + 3]),
+                                ForeignNet = decimal.Parse(list[i + 4]),
+                                DomesticBuy = decimal.Parse(list[i + 5]),
+                                DomesticSell = decimal.Parse(list[i + 6]),
+                                DomesticNet = decimal.Parse(list[i + 7]),
+                                DealerNet = decimal.Parse(list[i + 8]),
+                                TotalNet = decimal.Parse(list[i + 15])
+                            };
+
+                            institutions.Add(item);
+                        }
+
+                        //更新資料庫
+                        svc.AddInstitution(institutions);
+                    }
                 }
             }
 
-
+            MessageBox.Show("更新完成");
         }
 
         #region 私人方法
+
         /// <summary>
         /// 取得日期列表
         /// </summary>
@@ -492,7 +512,8 @@ namespace ChipForm
 
             return data;
         }
-        #endregion
+
+        #endregion 私人方法
 
         /// <summary>
         /// 查詢DB集保的最新日期
@@ -503,7 +524,7 @@ namespace ChipForm
         {
             //判斷資料庫最新日期
             ChipService svc = new ChipService();
-            var dbDateList = svc.GetDateList();
+            var dbDateList = svc.GetChipDateList();
 
             //顯示到畫面
             dbDateList.Sort();
@@ -511,9 +532,5 @@ namespace ChipForm
 
             MessageBox.Show("查詢完成");
         }
-
-       
     }
 }
-
-

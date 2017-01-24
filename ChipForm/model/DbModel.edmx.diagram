@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="55fc30918fa743818e6e0b1e750c2eec" Name="Diagram1">
         <EntityTypeShape EntityType="StockModel.Chip" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StockModel.Institution" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

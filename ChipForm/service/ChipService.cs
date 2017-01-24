@@ -46,12 +46,42 @@ namespace ChipForm.service
             }
         }
 
-        public List<string> GetDateList()
+        //新增三大法人
+        public void AddInstitution(List<InstitutionalModel> data)
+        {
+            using (db = new StockEntities())
+            {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+
+                Mapper.Initialize(cfg => cfg.CreateMap<InstitutionalModel, Institution>());
+
+                var list = Mapper.Map<List<Institution>>(data);
+                //新增
+                db.Institution.AddRange(list);
+                db.SaveChanges();
+
+            }
+        }
+
+        public List<string> GetChipDateList()
         {
             List<string> r = new List<string>();
             using (db = new StockEntities())
             {
                 r = db.Database.SqlQuery<string>(@"select distinct InfoDate from Chip").ToList();
+            }
+
+            return r;
+        }
+
+        public List<string> GetinstitutionDateList()
+        {
+            List<string> r = new List<string>();
+            using (db = new StockEntities())
+            {
+                r = db.Database.SqlQuery<string>(@"select distinct InfoDate from Institution").ToList();
             }
 
             return r;
