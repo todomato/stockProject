@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlParseForm", "HtmlParseF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "說明", "說明", "{02D67418-2E2A-4041-BA01-A27663ED5D8B}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\2017-01-24_163737.png = ..\..\..\Desktop\2017-01-24_163737.png
 		專案說明.txt = 專案說明.txt
 	EndProjectSection
 EndProject

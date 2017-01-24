@@ -37,8 +37,9 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.QueryDBChipDate = new System.Windows.Forms.Button();
-            this.txt_year = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txt_weeks = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btn_query
@@ -90,11 +91,11 @@
             // 
             // btn_weekTrade
             // 
-            this.btn_weekTrade.Location = new System.Drawing.Point(163, 346);
+            this.btn_weekTrade.Location = new System.Drawing.Point(191, 345);
             this.btn_weekTrade.Name = "btn_weekTrade";
-            this.btn_weekTrade.Size = new System.Drawing.Size(75, 23);
+            this.btn_weekTrade.Size = new System.Drawing.Size(91, 23);
             this.btn_weekTrade.TabIndex = 7;
-            this.btn_weekTrade.Text = "三大週買賣";
+            this.btn_weekTrade.Text = "三大上市週買賣";
             this.btn_weekTrade.UseVisualStyleBackColor = true;
             this.btn_weekTrade.Click += new System.EventHandler(this.btn_weekTrade_Click);
             // 
@@ -125,30 +126,42 @@
             this.QueryDBChipDate.UseVisualStyleBackColor = true;
             this.QueryDBChipDate.Click += new System.EventHandler(this.QueryDBChipDate_Click);
             // 
-            // txt_year
+            // button1
             // 
-            this.txt_year.Location = new System.Drawing.Point(89, 346);
-            this.txt_year.Name = "txt_year";
-            this.txt_year.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_year.Size = new System.Drawing.Size(68, 22);
-            this.txt_year.TabIndex = 12;
+            this.button1.Location = new System.Drawing.Point(288, 346);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "三大上櫃週買賣";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btn_weekTrade2_Click);
             // 
-            // label2
+            // txt_weeks
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 349);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "設定年份";
+            this.txt_weeks.Location = new System.Drawing.Point(77, 346);
+            this.txt_weeks.Multiline = true;
+            this.txt_weeks.Name = "txt_weeks";
+            this.txt_weeks.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt_weeks.Size = new System.Drawing.Size(100, 66);
+            this.txt_weeks.TabIndex = 15;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(30, 350);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "設定週";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 442);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txt_year);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txt_weeks);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.QueryDBChipDate);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox2);
@@ -176,8 +189,9 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button QueryDBChipDate;
-        private System.Windows.Forms.TextBox txt_year;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txt_weeks;
+        private System.Windows.Forms.Label label3;
     }
 }
 

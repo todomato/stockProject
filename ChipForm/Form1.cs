@@ -294,17 +294,17 @@ namespace ChipForm
 
             string Url = "http://www.tse.com.tw/ch/trading/fund/TWT54U/TWT54U.php";
             ChipService svc = new ChipService();
-            var dbDateList = svc.GetinstitutionDateList();
+            var dbDateList = svc.GetinstitutionDateListMarket1();
 
             //2016 年日期列表, 新的列表要用新的邏輯去抓每週一,如果回傳空值要抓隔天之類的,或是提供自行輸入抓取
-            var dates = GetOldDate();
-            var year = txt_year.Text; 
+            var dates = GetDates();
 
             foreach (var date in dates)
             {
                 //防呆 資料庫有就不新增
                 if (dbDateList.Any(c => c == date)) continue;
 
+                var year = date.Substring(0, 4);
                 string param = string.Format("download=&query_year={1}&query_week={0}&select2=ALLBUT0999&sorting=by_issue", date, year);
                 byte[] bs = Encoding.ASCII.GetBytes(param);
 
@@ -356,6 +356,97 @@ namespace ChipForm
                             {
                                 Code = list[i],
                                 Category = "上市",
+                                Type = "week",
+                                InfoDate = date,
+                                ForeignBuy = decimal.Parse(list[i + 2]),
+                                ForeignSell = decimal.Parse(list[i + 3]),
+                                ForeignNet = decimal.Parse(list[i + 4]),
+                                DomesticBuy = decimal.Parse(list[i + 5]),
+                                DomesticSell = decimal.Parse(list[i + 6]),
+                                DomesticNet = decimal.Parse(list[i + 7]),
+                                DealerNet = decimal.Parse(list[i + 8]),
+                                TotalNet = decimal.Parse(list[i + 15])
+                            };
+
+                            institutions.Add(item);
+                        }
+
+                        //更新資料庫
+                        svc.AddInstitution(institutions);
+                    }
+                }
+            }
+
+            MessageBox.Show("更新完成");
+        }
+
+        /// <summary>
+        /// 上櫃 : 三大法人周
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_weekTrade2_Click(object sender, EventArgs e)
+        {
+            //上櫃三大法人週買賣超 "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=zh-tw&se=EW&t=W&d=105/06/28&s=0,asc,0";
+            // xpath : /html/body/table/tbody
+
+            string UrlTemplate = "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=zh-tw&se=EW&t=W&d={0}/{1}/{2}&s=0,asc,0";
+
+            ChipService svc = new ChipService();
+            var dbDateList = svc.GetinstitutionDateListMarket2();
+
+            var dates = GetDates();
+
+            foreach (var date in dates)
+            {
+                //防呆 資料庫有就不新增
+                if (dbDateList.Any(c => c == date)) continue;
+
+                //解析日期格式 : ex. 105/12/23
+                var year = (int.Parse(date.Substring(0, 4)) - 1911).ToString();
+                var Url = string.Format(UrlTemplate, year, date.Substring(4, 2), date.Substring(6, 2));
+                HttpWebRequest request = HttpWebRequest.Create(Url) as HttpWebRequest;
+                string page = null;
+                request.Method = "GET";    // 方法
+                request.KeepAlive = false; //是否保持連線
+                request.ContentType = "application/x-www-form-urlencoded";
+
+                using (WebResponse response = request.GetResponse())
+                {
+                    StreamReader sr = new StreamReader(response.GetResponseStream());
+                    page = sr.ReadToEnd();
+                    sr.Close();
+                }
+
+                //解析html
+                var doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(page);
+
+                string xpath = "/html/body/table/tbody";
+
+                //解析資料
+                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes(xpath);
+                if (nodes != null)
+                {
+                    foreach (HtmlNode node in nodes)
+                    {
+                        var str = node.InnerText.Trim();
+                        //解析字串
+                        List<string> list = str.Split(new string[] { "\r\n\t\t\t\t" }, StringSplitOptions.None).Select(c => c.Trim()).ToList();
+
+                        // 組裝
+                        var institutions = new List<InstitutionalModel>();
+                        for (int i = 0; i < list.Count; i = i + 16)
+                        {
+                            //非stock
+                            if (list[i].Length != 4) continue;
+                            textBox1.Text = string.Format("{1} : {0}", institutions.Count, date);
+                            Application.DoEvents();
+
+                            var item = new InstitutionalModel()
+                            {
+                                Code = list[i],
+                                Category = "上櫃",
                                 Type = "week",
                                 InfoDate = date,
                                 ForeignBuy = decimal.Parse(list[i + 2]),
@@ -455,60 +546,9 @@ namespace ChipForm
             }
         }
 
-        private List<string> GetOldDate()
+        private List<string> GetDates()
         {
-            var data = new List<string>();
-            data.Add("20161226");
-            data.Add("20161219");
-            data.Add("20161212");
-            data.Add("20161205");
-            data.Add("20161128");
-            data.Add("20161121");
-            data.Add("20161114");
-            data.Add("20161107");
-            data.Add("20161031");
-            data.Add("20161024");
-            data.Add("20161017");
-            data.Add("20161011");
-            data.Add("20161003");
-            data.Add("20160926");
-            data.Add("20160919");
-            data.Add("20160912");
-            data.Add("20160905");
-            data.Add("20160829");
-            data.Add("20160822");
-            data.Add("20160815");
-            data.Add("20160808");
-            data.Add("20160801");
-            data.Add("20160725");
-            data.Add("20160718");
-            data.Add("20160711");
-            data.Add("20160704");
-            data.Add("20160627");
-            data.Add("20160620");
-            data.Add("20160613");
-            data.Add("20160606");
-            data.Add("20160530");
-            data.Add("20160523");
-            data.Add("20160516");
-            data.Add("20160509");
-            data.Add("20160503");
-            data.Add("20160425");
-            data.Add("20160418");
-            data.Add("20160411");
-            data.Add("20160406");
-            data.Add("20160328");
-            data.Add("20160321");
-            data.Add("20160314");
-            data.Add("20160307");
-            data.Add("20160301");
-            data.Add("20160222");
-            data.Add("20160215");
-            data.Add("20160201");
-            data.Add("20160125");
-            data.Add("20160118");
-            data.Add("20160111");
-            data.Add("20160104");
+            var data = txt_weeks.Text.Split(new string[] { "\r\n" }, StringSplitOptions.None).Select(c => c.Trim()).ToList();
 
             return data;
         }

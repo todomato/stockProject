@@ -76,12 +76,23 @@ namespace ChipForm.service
             return r;
         }
 
-        public List<string> GetinstitutionDateList()
+        public List<string> GetinstitutionDateListMarket1()
         {
             List<string> r = new List<string>();
             using (db = new StockEntities())
             {
-                r = db.Database.SqlQuery<string>(@"select distinct InfoDate from Institution").ToList();
+                r = db.Database.SqlQuery<string>(@"select distinct InfoDate from Institution where Category = '上市'").ToList();
+            }
+
+            return r;
+        }
+
+        public List<string> GetinstitutionDateListMarket2()
+        {
+            List<string> r = new List<string>();
+            using (db = new StockEntities())
+            {
+                r = db.Database.SqlQuery<string>(@"select distinct InfoDate from Institution where Category = '上櫃'").ToList();
             }
 
             return r;
